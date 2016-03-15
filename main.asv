@@ -1,0 +1,98 @@
+function varargout = main(varargin)
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @main_OpeningFcn, ...
+                   'gui_OutputFcn',  @main_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+function main_OpeningFcn(hObject, eventdata, handles, varargin)
+
+handles.output = hObject;
+
+guidata(hObject, handles);
+function varargout = main_OutputFcn(hObject, eventdata, handles) 
+
+varargout{1} = handles.output;
+
+function eM_Callback(hObject, eventdata, handles)
+function eM_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+function eN_Callback(hObject, eventdata, handles)
+function eN_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+function eK_Callback(hObject, eventdata, handles)
+function eK_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+function eS_Callback(hObject, eventdata, handles)
+function eS_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function pushbutton1_Callback(hObject, eventdata, handles)
+clc
+K='1001101110';
+
+N=10;
+rK=numel(K);
+
+M=get(handles.eM,'String');
+
+M=unicode2native(M);
+M=dec2bin(M);
+M=reshape(M',1,numel(M));
+
+raz=mod(numel(M),N);
+
+if raz==0
+    M=reshape(M,numel(M)/N,N)
+else
+    M=strcat(dec2bin(0,N-raz),M)
+    M=reshape(M,numel(M)/N,N)
+end
+
+for i=1:numel(M(:,1))
+    XL=M(i,1:5);
+    XR=M(i,6:10);
+    for raund=1:10
+        
+        if mod(raund,2)==1
+            Key=K(1:5);
+        else
+            Key=K(6:10);
+        end
+        res='';
+        for j=1:5
+            ans=[str2double(Key(j)) str2double(XL(j))];
+            res=strcat(res,num2str(xor(ans(1),ans(2))));
+        end
+        S(i,:)=strcat(XR,res);
+        
+        XL=S(i,1:5);
+        XR=S(i,6:10);
+    end
+end
+
+S=reshape(S',1,numel(S))
+if raz==0
+    S=reshape(S,numel(M)/N,N)
+else
+    M=strcat(dec2bin(0,N-raz),M)
+    M=reshape(M,numel(M)/N,N)
+end
